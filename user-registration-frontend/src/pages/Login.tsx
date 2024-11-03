@@ -19,7 +19,10 @@ const Login: React.FC = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      await axios.post("http://localhost:3000/user/login", data);
+      await axios.post(
+        "https://user-registration-app-1.onrender.com/user/login",
+        data
+      );
       alert("Login successful");
       navigate("/"); // Redirect to Home or Dashboard page on success
     } catch (error: unknown) {

@@ -21,7 +21,7 @@ export default function Register() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/user/register",
+        "https://user-registration-app-1.onrender.com/user/register",
         data
       );
       setSuccessMessage(response.data.message); // Show success message
