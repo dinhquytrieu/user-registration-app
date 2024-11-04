@@ -6,6 +6,7 @@ import { useState } from "react";
 type FormData = {
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 export default function Register() {
@@ -13,17 +14,20 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<FormData>();
 
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const password = watch("password");
 
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
         "https://user-registration-app-1.onrender.com/user/register",
         // "http://localhost:3000/user/register",
-        data
+        { email: data.email, password: data.password }
       );
       setSuccessMessage(response.data.message); // Show success message
       setTimeout(() => navigate("/login"), 2000); // Redirect after 2 seconds
@@ -109,6 +113,24 @@ export default function Register() {
           {errors.password && (
             <p className="mt-1 text-sm text-red-600">
               {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Confirm Password</label>
+          <input
+            type="password"
+            {...register("confirmPassword", {
+              required: "Please confirm your password",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            })}
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.confirmPassword && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors.confirmPassword.message}
             </p>
           )}
         </div>
